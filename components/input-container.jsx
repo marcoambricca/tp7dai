@@ -1,29 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 
-export default function InputContainer({ label }){
+export default function InputContainer({ label }) {
     return (
         <View style={styles.formInput}>
             <Text style={styles.inputLabel}>{label}</Text>
-            <TextInput style={styles.inputField} keyboardType="default" />
+            <TextInput style={styles.inputField} keyboardType="default" secureTextEntry={label === 'Password'} />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     formInput: {
-        flexDirection: column,
-        alignItems: 'center',
-        justifyContent: 'start',
+        marginBottom: 15,
     },
     inputLabel: {
-        fontSize: 14
+        fontSize: 14,
+        color: '#333333',
+        marginBottom: 5,
     },
     inputField: {
-        paddingHorizontal: 5,
-        paddingVertical: 12,
-        verticalAlign: 'middle',
-        borderRadius: 6,
-        cursor: 'text'
-    }
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#dcdcdc',
+        backgroundColor: '#fafafa',
+        fontSize: 16,
+    },
 });
