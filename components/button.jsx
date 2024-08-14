@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-export default function GreenButton({ title, onPress }) {
+export default function GreenButton({ title, onPress, backgroundColor }) {
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={[styles.button, {backgroundColor: backgroundColor}]} onPress={onPress}>
             <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>
     );
@@ -11,7 +11,6 @@ export default function GreenButton({ title, onPress }) {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: '#28a745',
         borderRadius: 5,
         paddingVertical: 8,
         paddingHorizontal: 18,

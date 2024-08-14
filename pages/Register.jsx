@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
-import GreenButton from '../components/green-button';
+import GreenButton from '../components/button';
 
 export default function RegisterScreen({ navigation }) {
     const handleRegister = () => {
@@ -17,7 +17,7 @@ export default function RegisterScreen({ navigation }) {
                 <InputContainer label={'Last name'} />
                 <InputContainer label={'Username'} />
                 <InputContainer label={'Password'} />
-                <GreenButton title={'Register'} onPress={handleRegister} />
+                <GreenButton title={'Register'} onPress={handleRegister} backgroundColor={'#28a745'} />
                 <View style={styles.footer}>
                     <Pressable onPress={() => navigation.navigate('Login')}>
                         <Text style={styles.footerText}>Already have an account? Log in</Text>

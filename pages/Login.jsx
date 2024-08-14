@@ -1,24 +1,41 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
-import GreenButton from '../components/green-button';
+import GreenButton from '../components/button';
 import { apiPost } from '../api/user-controller';
 
 export default function LoginScreen({ navigation }) {
-    const [formData, setFormData] = useState(null);
+    const [formData, setFormData] = useState({username: '', password: ''});
     
-    const handleLogin = () => {
-        navigation.navigate('Home');
-        console.log("Login button pressed");
+    const handleInput = (name, value) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleLogin = async () => {
+        const response = await apiPost('user/login', formData);
+        if (response) {
+            if (response.success){
+                navigation.navigate('Home');
+            }
+            else{
+                console.log(response.message)
+            }
+        }
+        else{
+            console.log('login error')
+        }
     };
     
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.form}>
                 <Text style={styles.title}>Sign in</Text>
-                <InputContainer label={'Username'} />
-                <InputContainer label={'Password'} />
-                <GreenButton title={'Sign in'} onPress={handleLogin} />
+                <InputContainer label={'Username'} name={'username'} onChange={handleInput} value={formData.username}/>
+                <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password}/>
+                <GreenButton title={'Sign in'} onPress={handleLogin} backgroundColor={'#28a745'} />
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Forgot password?</Text>
                     <Pressable onPress={() => navigation.navigate('Register')}>
