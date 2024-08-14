@@ -5,7 +5,7 @@ import GreenButton from '../components/green-button';
 
 export default function RegisterScreen({ navigation }) {
     const handleRegister = () => {
-        navigation.navigate('Home');
+        navigation.navigate('Login');
         console.log('Register pressed');
     }
 

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
 import GreenButton from '../components/green-button';
+import { apiPost } from '../api/user-controller';
 
 export default function LoginScreen({ navigation }) {
+    const [formData, setFormData] = useState(null);
+    
     const handleLogin = () => {
         navigation.navigate('Home');
         console.log("Login button pressed");
