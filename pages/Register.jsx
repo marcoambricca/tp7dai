@@ -1,24 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
 import GreenButton from '../components/button';
+import { apiPost } from '../api/user-controller.js';
 
 export default function RegisterScreen({ navigation }) {
-    const handleRegister = () => {
-        navigation.navigate('Login');
-        console.log('Register pressed');
-    }
+    const [formData, setFormData] = useState({first_name: '', last_name: '', username: '', password: ''});
+    
+    const handleInput = (name, value) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
 
+    const handleRegister = async () => {
+        const response = await apiPost('user/register', formData);
+        console.log('response', response)
+        if (response) {
+            if (response === 'OK'){
+                navigation.navigate('Login');
+            }
+            else{
+                console.log(response.message)
+            }
+        }
+        else{
+            console.log('register error')
+        }
+    };
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.form}>
-                <Text style={styles.title}>Register</Text>
-                <InputContainer label={'First name'} />
-                <InputContainer label={'Last name'} />
-                <InputContainer label={'Username'} />
-                <InputContainer label={'Password'} />
+                <Text style={styles.title}>Sign in</Text>
+                <InputContainer label={'First name'} name={'first_name'} onChange={handleInput} value={formData.first_name}/>
+                <InputContainer label={'Last name'} name={'last_name'} onChange={handleInput} value={formData.last_name}/>
+                <InputContainer label={'Username'} name={'username'} onChange={handleInput} value={formData.username}/>
+                <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password}/>
                 <GreenButton title={'Register'} onPress={handleRegister} backgroundColor={'#28a745'} />
                 <View style={styles.footer}>
+                    <Text style={styles.footerText}>Forgot password?</Text>
                     <Pressable onPress={() => navigation.navigate('Login')}>
                         <Text style={styles.footerText}>Already have an account? Log in</Text>
                     </Pressable>
