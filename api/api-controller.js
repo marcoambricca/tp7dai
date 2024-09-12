@@ -18,7 +18,6 @@ export async function apiPost(endpoint, payload){
     let response = null;
     try {
         result = await axios.post(url, payload);
-        console.log(result)
         response = result.data;
     }
     catch (error){

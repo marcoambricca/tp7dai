@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
 import GreenButton from '../components/button';
-import { apiPost } from '../api/user-controller.js';
+import { apiPost } from '../api/api-controller.js';
 
 export default function RegisterScreen({ navigation }) {
     const [formData, setFormData] = useState({first_name: '', last_name: '', username: '', password: ''});

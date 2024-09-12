@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import apiCall from '../api/user-controller.js';
+import { apiCall } from '../api/api-controller.js';
 import EventList from '../components/event-list.jsx';
 
 export default function HomeScreen({ navigation }){
     const [arrayEvents, setArrayEvents] = useState([]);
     
     useEffect(() => {
-        let arr = apiCall('event');
-        setArrayEvents(arr);
+        const fetchEvents = async () => {
+            const events = await apiCall('event');
+            if (events) {
+                console.log('events fetched', events);
+                setArrayEvents(events);
+            }
+        };
+        fetchEvents();
     }, []);
     
     return(

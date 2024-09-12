@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
 import GreenButton from '../components/button';
-import { apiPost } from '../api/user-controller';
+import { apiPost } from '../api/api-controller';
 
 export default function LoginScreen({ navigation }) {
     const [formData, setFormData] = useState({username: '', password: ''});

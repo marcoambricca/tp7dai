@@ -2,63 +2,54 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function EventCard({ event }){
-  const {
-    name,
-    description,
-    event_category,
-    event_location,
-    start_date,
-    duration_in_minutes,
-    price,
-    enabled_for_enrollment
-  } = event;
+    console.log('event in event card', event)
+    
+    return (
+        <View style={styles.card}>
+            <Text style={styles.title}>{event.name}</Text>
+            <Text style={styles.description}>{event.description}</Text>
 
-  return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{name}</Text>
-      <Text style={styles.description}>{description}</Text>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Category:</Text>
+                <Text>{event.event_category.name}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Category:</Text>
-        <Text>{event_category.name}</Text>
-      </View>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Location:</Text>
+                <Text>{`${event.event_location.name}, ${event.event_location.full_address}`}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Location:</Text>
-        <Text>{`${event_location.name}, ${event_location.full_address}`}</Text>
-      </View>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Max Capacity:</Text>
+                <Text>{event.event_location.max_capacity}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Max Capacity:</Text>
-        <Text>{event_location.max_capacity}</Text>
-      </View>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Province:</Text>
+                <Text>{event.event_location.location.province.name}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Province:</Text>
-        <Text>{event_location.location.province.name}</Text>
-      </View>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Price:</Text>
+                <Text>${event.price}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Price:</Text>
-        <Text>${price}</Text>
-      </View>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Start Date:</Text>
+                <Text>{new Date(event.start_date).toLocaleDateString()}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Start Date:</Text>
-        <Text>{new Date(start_date).toLocaleDateString()}</Text>
-      </View>
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Duration:</Text>
+                <Text>{`${event.duration_in_minutes} minutes`}</Text>
+            </View>
 
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Duration:</Text>
-        <Text>{`${duration_in_minutes} minutes`}</Text>
-      </View>
-
-      <View style={styles.detailRow}>
-        <Text style={styles.label}>Enrollment Status:</Text>
-        <Text>{enabled_for_enrollment === "1" ? "Enabled" : "Disabled"}</Text>
-      </View>
-    </View>
-  );
+            <View style={styles.detailRow}>
+                <Text style={styles.label}>Enrollment Status:</Text>
+                <Text>{event.enabled_for_enrollment === "1" ? "Enabled" : "Disabled"}</Text>
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
