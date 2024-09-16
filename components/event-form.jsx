@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import InputContainer from './input-container.jsx';
 import PickerComponent from './option-picker.jsx';
 import { apiCall } from '../api/api-controller.js';
+import { getData } from '../local/data-service.js';
 
-const Form = () => {
+export default function Form() {
     const [formState, setFormState] = useState({
         name: '',
         description: '',
@@ -27,14 +28,21 @@ const Form = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const resultCat = await apiCall('event_category');
-            const resultLoc = await apiCall('locations');
+            let resultCat;
+            let resultLoc;
+            const user = await getData('user');
+
+            try {
+                resultCat = await apiCall('event_category');
+                resultLoc = await apiCall('event_location', null, user.token);
+            } catch (e){
+                console.log(e);
+            }
+
             if (resultCat){
-                console.log('categories', resultCat);
                 setCategories(resultCat);
             }
             if (resultLoc){
-                console.log('locations', resultLoc);
                 setLocations(resultLoc);
             }
         }
@@ -57,7 +65,6 @@ const Form = () => {
     };
 
     const handleSubmit = () => {
-        // Handle form submission
         console.log(formState);
     };
 
@@ -68,14 +75,12 @@ const Form = () => {
                 name="name"
                 value={formState.name}
                 onChange={handleInputChange}
-                placeholder="Enter event name"
             />
             <InputContainer
                 label="Description"
                 name="description"
                 value={formState.description}
                 onChange={handleInputChange}
-                placeholder="Enter event description"
             />
             <PickerComponent
                 label="Category"
@@ -94,7 +99,6 @@ const Form = () => {
                 name="start_date"
                 value={formState.start_date}
                 onChange={handleInputChange}
-                placeholder="Enter start date"
             />
             <InputContainer
                 label="Duration (minutes)"
@@ -102,7 +106,6 @@ const Form = () => {
                 value={formState.duration_in_minutes}
                 onChange={handleInputChange}
                 keyboardType="numeric"
-                placeholder="Enter duration in minutes"
             />
             <InputContainer
                 label="Price"
@@ -110,7 +113,6 @@ const Form = () => {
                 value={formState.price}
                 onChange={handleInputChange}
                 keyboardType="numeric"
-                placeholder="Enter price"
             />
             <InputContainer
                 label="Max Assistance"
@@ -118,7 +120,6 @@ const Form = () => {
                 value={formState.max_assistance}
                 onChange={handleInputChange}
                 keyboardType="numeric"
-                placeholder="Enter max assistance"
             />
             <Button title="Submit" onPress={handleSubmit} />
         </View>
@@ -130,5 +131,3 @@ const styles = StyleSheet.create({
         padding: 20,
     },
 });
-
-export default Form;

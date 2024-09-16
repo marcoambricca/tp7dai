@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
 import GreenButton from '../components/button';
 import { apiPost } from '../api/api-controller';
+import { storeData } from '../local/data-service.js'
 
 export default function LoginScreen({ navigation }) {
     const [formData, setFormData] = useState({username: '', password: ''});
@@ -16,9 +17,11 @@ export default function LoginScreen({ navigation }) {
 
     const handleLogin = async () => {
         const response = await apiPost('user/login', formData);
+        console.log()
         if (response) {
             if (response.success){
                 navigation.navigate('Home');
+                storeData('user', {username: formData.username, password: formData.password, token: response.token});
             }
             else{
                 console.log(response.message)

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 
-export default function InputContainer({ label, onChange, name, value, placeholder, keyboardType = "default", secureTextEntry = false }) {
+export default function InputContainer({ label, onChange, name, value, keyboardType = "default", secureTextEntry = false }) {
     return (
         <View style={styles.formInput}>
             <Text style={styles.inputLabel}>{label}</Text>
@@ -11,7 +11,6 @@ export default function InputContainer({ label, onChange, name, value, placehold
                 secureTextEntry={secureTextEntry}
                 value={value}
                 onChangeText={(text) => onChange(name, text)}
-                placeholder={placeholder}
             />
         </View>
     );
