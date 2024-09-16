@@ -1,16 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 
-export default function InputContainer({ label, onChange, name, value }) {
+export default function InputContainer({ label, onChange, name, value, placeholder, keyboardType = "default", secureTextEntry = false }) {
     return (
         <View style={styles.formInput}>
             <Text style={styles.inputLabel}>{label}</Text>
             <TextInput
-                style={styles.inputField} 
-                keyboardType="default" 
-                secureTextEntry={label === 'Password'} 
+                style={styles.inputField}
+                keyboardType={keyboardType}
+                secureTextEntry={secureTextEntry}
                 value={value}
-                onChangeText={(value) => onChange(name, value)} 
+                onChangeText={(text) => onChange(name, text)}
+                placeholder={placeholder}
             />
         </View>
     );

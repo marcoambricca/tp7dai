@@ -34,7 +34,7 @@ export default function LoginScreen({ navigation }) {
             <View style={styles.form}>
                 <Text style={styles.title}>Sign in</Text>
                 <InputContainer label={'Username'} name={'username'} onChange={handleInput} value={formData.username}/>
-                <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password}/>
+                <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password} secureTextEntry={true}/>
                 <GreenButton title={'Sign in'} onPress={handleLogin} backgroundColor={'#28a745'} />
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Forgot password?</Text>

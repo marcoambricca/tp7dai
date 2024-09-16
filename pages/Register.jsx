@@ -37,7 +37,7 @@ export default function RegisterScreen({ navigation }) {
                 <InputContainer label={'First name'} name={'first_name'} onChange={handleInput} value={formData.first_name}/>
                 <InputContainer label={'Last name'} name={'last_name'} onChange={handleInput} value={formData.last_name}/>
                 <InputContainer label={'Username'} name={'username'} onChange={handleInput} value={formData.username}/>
-                <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password}/>
+                <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password} secureTextEntry={true}/>
                 <GreenButton title={'Register'} onPress={handleRegister} backgroundColor={'#28a745'} />
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Forgot password?</Text>

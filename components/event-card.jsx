@@ -2,8 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function EventCard({ event }){
-    console.log('event in event card', event)
-    
     return (
         <View style={styles.card}>
             <Text style={styles.title}>{event.name}</Text>
@@ -16,7 +14,7 @@ export default function EventCard({ event }){
 
             <View style={styles.detailRow}>
                 <Text style={styles.label}>Location:</Text>
-                <Text>{`${event.event_location.name}, ${event.event_location.full_address}`}</Text>
+                <Text>{`${event.event_location.name}`}</Text>
             </View>
 
             <View style={styles.detailRow}>

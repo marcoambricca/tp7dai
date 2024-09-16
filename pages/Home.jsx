@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { apiCall } from '../api/api-controller.js';
 import EventList from '../components/event-list.jsx';
+import Header from '../components/header.jsx';
 
 export default function HomeScreen({ navigation }){
     const [arrayEvents, setArrayEvents] = useState([]);
     
     useEffect(() => {
         const fetchEvents = async () => {
-            const events = await apiCall('event');
-            if (events) {
-                console.log('events fetched', events);
-                setArrayEvents(events);
+            const result = await apiCall('event', [null, null, null, null]);
+            if (result) {
+                console.log('events fetched', result);
+                setArrayEvents(result[0].json_agg);
             }
         };
         fetchEvents();
@@ -19,6 +20,7 @@ export default function HomeScreen({ navigation }){
     
     return(
         <SafeAreaView style={styles.container}>
+            <Header navigation={navigation}/>
             <EventList events={arrayEvents}/>
         </SafeAreaView>
     )

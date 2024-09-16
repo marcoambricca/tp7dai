@@ -3,13 +3,11 @@ import { ScrollView, Text, StyleSheet } from 'react-native';
 import EventCard from './event-card.jsx';
 
 export default function EventList({ events }) {
-    console.log('Events received:', events);
-
     return (
         <ScrollView style={styles.container}>
             {events.length > 0 ? (
-                events.map((event) => (
-                    <EventCard key={event.id} event={event} />
+                events.map((event, index) => (
+                    <EventCard key={index} event={event} />
                 ))
             ) : (
                 <Text>No events available</Text>

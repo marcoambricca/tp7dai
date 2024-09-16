@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export async function apiCall(endpoint){
+export async function apiCall(endpoint, payload){
     const url = 'http://localhost:3000/api/' + endpoint;
     let response = null;
     try {
-        result = await axios.get(url);
+        result = await axios.get(url, payload);
         response = result.data;
     }
     catch (error){
