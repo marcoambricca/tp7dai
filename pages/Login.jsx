@@ -16,12 +16,11 @@ export default function LoginScreen({ navigation }) {
     };
 
     const handleLogin = async () => {
-        const response = await apiPost('user/login', formData);
-        console.log()
+        const response = await apiPost('user/login', formData, null);
         if (response) {
             if (response.success){
                 navigation.navigate('Home');
-                storeData('user', {username: formData.username, password: formData.password, token: response.token});
+                storeData('user', {id: response.userId, username: formData.username, password: formData.password, token: response.token});
             }
             else{
                 console.log(response.message)

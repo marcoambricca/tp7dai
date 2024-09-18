@@ -15,8 +15,7 @@ export default function RegisterScreen({ navigation }) {
     };
 
     const handleRegister = async () => {
-        const response = await apiPost('user/register', formData);
-        console.log('response', response)
+        const response = await apiPost('user/register', formData, null);
         if (response) {
             if (response === 'OK'){
                 navigation.navigate('Login');

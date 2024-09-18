@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import InputContainer from './input-container.jsx';
 import PickerComponent from './option-picker.jsx';
-import { apiCall } from '../api/api-controller.js';
+import DatePickerContainer from './date-picker.jsx';
+import { apiCall, apiPost } from '../api/api-controller.js';
 import { getData } from '../local/data-service.js';
 
 export default function Form() {
@@ -14,24 +15,44 @@ export default function Form() {
         start_date: '',
         duration_in_minutes: '',
         price: '',
-        enabled_for_enrollment: false,
+        enabled_for_enrollment: true,
         max_assistance: '',
-        id_creator_user: '',
-        event_location: {},
-        tags: [],
-        creator_user: {},
-        event_category: {},
+        id_creator_user: ''
     });
 
     const [categories, setCategories] = useState([]);
     const [locations, setLocations] = useState([]);
+    const [currentUser, setCurrentUser] = useState({});
+    
+    /*useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const user = await getData('user');
+                if (user) {
+                    setCurrentUser(user);
+                }
+            } catch (error) {
+                console.log('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, []);*/
 
     useEffect(() => {
         const fetchData = async () => {
             let resultCat;
             let resultLoc;
             const user = await getData('user');
-
+            if (user){
+                console.log('user', user)
+                setCurrentUser(user);
+                setFormState(prevState => ({
+                    ...prevState,
+                    ['id_creator_user']: user.id,
+                }));
+            }
+            
             try {
                 resultCat = await apiCall('event_category');
                 resultLoc = await apiCall('event_location', null, user.token);
@@ -50,10 +71,19 @@ export default function Form() {
     }, [])
 
     const handleInputChange = (name, value) => {
-        setFormState(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
+        if (value.isNumeric()){
+            setFormState(prevState => ({
+                ...prevState,
+                [name]: parseInt(value),
+            }));
+        }
+        else{
+            setFormState(prevState => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
+        
     };
 
     const handleCategoryChange = (itemValue) => {
@@ -64,8 +94,11 @@ export default function Form() {
         handleInputChange('id_event_location', itemValue);
     };
 
-    const handleSubmit = () => {
-        console.log(formState);
+    const handleSubmit = async () => {
+        console.log(formState)
+        const user = await getData('user');
+        const response = await apiPost('event', formState, user.token);
+        console.log(response);
     };
 
     return (
@@ -94,8 +127,8 @@ export default function Form() {
                 onValueChange={handleLocationChange}
                 options={locations}
             />
-            <InputContainer
-                label="Start Date"
+            <DatePickerContainer 
+                label="Start date"
                 name="start_date"
                 value={formState.start_date}
                 onChange={handleInputChange}

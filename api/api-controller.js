@@ -18,11 +18,11 @@ export async function apiCall(endpoint, payload, token){
     return response;
 }
 
-export async function apiPost(endpoint, payload){
+export async function apiPost(endpoint, payload, token){
     const url = 'http://localhost:3000/api/' + endpoint;
     let response = null;
     try {
-        result = await axios.post(url, payload);
+        result = await axios.post(url, payload, token);
         response = result.data;
     }
     catch (error){

@@ -11,7 +11,6 @@ export default function HomeScreen({ navigation }){
         const fetchEvents = async () => {
             const result = await apiCall('event', [null, null, null, null], null);
             if (result) {
-                console.log('events fetched', result);
                 setArrayEvents(result[0].json_agg);
             }
         };
