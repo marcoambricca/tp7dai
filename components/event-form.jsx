@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import InputContainer from './input-container.jsx';
 import PickerComponent from './option-picker.jsx';
-import DatePickerContainer from './date-picker.jsx';
 import { apiCall, apiPost } from '../api/api-controller.js';
 import { getData } from '../local/data-service.js';
+import EventConfirmationModal from './modal.jsx';
+import SuccessModal from './successModal.jsx';
 
-export default function Form() {
+export default function Form({ navigation }) {
     const [formState, setFormState] = useState({
         name: '',
         description: '',
@@ -15,7 +16,7 @@ export default function Form() {
         start_date: '',
         duration_in_minutes: '',
         price: '',
-        enabled_for_enrollment: true,
+        enabled_for_enrollment: 1,
         max_assistance: '',
         id_creator_user: ''
     });
@@ -23,21 +24,8 @@ export default function Form() {
     const [categories, setCategories] = useState([]);
     const [locations, setLocations] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
-    
-    /*useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const user = await getData('user');
-                if (user) {
-                    setCurrentUser(user);
-                }
-            } catch (error) {
-                console.log('Error fetching user:', error);
-            }
-        };
-
-        fetchUser();
-    }, []);*/
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,7 +33,7 @@ export default function Form() {
             let resultLoc;
             const user = await getData('user');
             if (user){
-                console.log('user', user)
+                console.log('user', user);
                 setCurrentUser(user);
                 setFormState(prevState => ({
                     ...prevState,
@@ -66,24 +54,15 @@ export default function Form() {
             if (resultLoc){
                 setLocations(resultLoc);
             }
-        }
+        };
         fetchData();
-    }, [])
+    }, []);
 
     const handleInputChange = (name, value) => {
-        if (value.isNumeric()){
-            setFormState(prevState => ({
-                ...prevState,
-                [name]: parseInt(value),
-            }));
-        }
-        else{
-            setFormState(prevState => ({
-                ...prevState,
-                [name]: value,
-            }));
-        }
-        
+        setFormState(prevState => ({
+            ...prevState,
+            [name]: Number.isInteger(value) ? parseInt(value) : value,
+        }));
     };
 
     const handleCategoryChange = (itemValue) => {
@@ -94,11 +73,21 @@ export default function Form() {
         handleInputChange('id_event_location', itemValue);
     };
 
-    const handleSubmit = async () => {
-        console.log(formState)
+    const handleSubmit = () => {
+        setModalVisible(true);
+    };
+
+    const handleConfirm = async () => {
         const user = await getData('user');
         const response = await apiPost('event', formState, user.token);
         console.log(response);
+        setModalVisible(false);
+        setSuccessModalVisible(true);
+    };
+
+    const handleSuccessModalClose = () => {
+        setSuccessModalVisible(false);
+        navigation.navigate('Home');
     };
 
     return (
@@ -127,7 +116,7 @@ export default function Form() {
                 onValueChange={handleLocationChange}
                 options={locations}
             />
-            <DatePickerContainer 
+            <InputContainer 
                 label="Start date"
                 name="start_date"
                 value={formState.start_date}
@@ -155,6 +144,18 @@ export default function Form() {
                 keyboardType="numeric"
             />
             <Button title="Submit" onPress={handleSubmit} />
+            
+            <EventConfirmationModal 
+                visible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                onConfirm={handleConfirm}
+                data={formState}
+            />
+
+            <SuccessModal 
+                visible={isSuccessModalVisible}
+                onClose={handleSuccessModalClose}
+            />
         </View>
     );
 };
