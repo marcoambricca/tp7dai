@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
-import { apiCall, apiPost } from '../api/api-controller.js';
-import { getData } from '../local/data-service.js';
+import { apiCall, apiPost } from '../../api/api-controller.js';
+import { getData } from '../../local/data-service.js';
 
 export default function EventDetail({ route, navigation }) {
     const { eventId } = route.params; // Obtiene el ID del evento desde las props

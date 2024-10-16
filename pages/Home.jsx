@@ -21,7 +21,6 @@ export default function HomeScreen({ navigation }){
                     );
                 });
                 setArrayEvents(filteredEvents);
-                console.log('filtered', filteredEvents);
             }
         };
         fetchEvents();

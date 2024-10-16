@@ -5,14 +5,24 @@ export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Events</Text>
-            <TouchableOpacity 
-                style={styles.button} 
-                onPress={() => {
-                    navigation.navigate('CreateEvent');
-                }}
-            >
-                <Text style={styles.buttonText}>+</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity 
+                    style={styles.button} 
+                    onPress={() => {
+                        navigation.navigate('CreateEvent');
+                    }}
+                >
+                    <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.userButton} 
+                    onPress={() => {
+                        navigation.navigate('AdminPanel'); // Cambia 'AdminPanel' por el nombre de la ruta del panel de admin
+                    }}
+                >
+                    <Text style={styles.userButtonText}>👤</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -29,21 +39,36 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
-        width: '100%'
+        width: '100%',
     },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
+        flex: 1, // Asegura que el título ocupe el espacio disponible
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     button: {
         padding: 10,
         backgroundColor: '#007BFF',
         borderRadius: 5,
+        marginRight: 10, // Espaciado entre botones
     },
     buttonText: {
         color: '#fff',
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    userButton: {
+        padding: 10,
+        backgroundColor: '#007BFF',
+        borderRadius: 5,
+    },
+    userButtonText: {
+        color: '#fff',
+        fontSize: 20,
     },
 });

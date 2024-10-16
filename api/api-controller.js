@@ -35,8 +35,6 @@ export async function apiPost(endpoint, payload, token) {
     return response;
 }
 
-import axios from 'axios';
-
 export async function apiDelete(endpoint, token) {
     const url = 'http://localhost:3000/api/' + endpoint;
     let response = null;
