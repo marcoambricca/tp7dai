@@ -34,3 +34,22 @@ export async function apiPost(endpoint, payload, token) {
     
     return response;
 }
+
+import axios from 'axios';
+
+export async function apiDelete(endpoint, token) {
+    const url = 'http://localhost:3000/api/' + endpoint;
+    let response = null;
+    try {
+        const result = await axios.delete(url, {
+            headers: {
+                'authorization': `Bearer ${token}`
+            }
+        });
+        response = result.data;
+    } catch (error) {
+        console.log(error);
+    }
+    
+    return response;
+}

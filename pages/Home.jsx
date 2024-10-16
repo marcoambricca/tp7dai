@@ -11,11 +11,22 @@ export default function HomeScreen({ navigation }){
         const fetchEvents = async () => {
             const result = await apiCall('event', [null, null, null, null], null);
             if (result) {
-                setArrayEvents(result[0].json_agg);
+                const currentDate = new Date();
+                const filteredEvents = result[0].json_agg.filter(event => {
+                    const eventDate = new Date(event.start_date);
+                    return (
+                        eventDate > currentDate && 
+                        event.enabled_for_enrollment && 
+                        event.enrolled_users < event.max_assistance
+                    );
+                });
+                setArrayEvents(filteredEvents);
+                console.log('filtered', filteredEvents);
             }
         };
         fetchEvents();
     }, []);
+    
     
     return(
         <SafeAreaView style={styles.container}>
