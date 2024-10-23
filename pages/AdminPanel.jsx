@@ -68,6 +68,7 @@ export default function AdminPanel({ navigation }) {
                         <Text style={styles.cardTitle}>{event.name}</Text>
                         <Button title="Ver participantes" onPress={() => openParticipantsModal(event.id)} />
                         <Button title="Eliminar evento" onPress={() => handleDeleteEvent(event.id)} color="red" />
+                        <Button title="Modificar evento" onPress={() => navigation.navigate('EditEvent', { eventId: event.id })} />
                     </View>
                 ))}
             </ScrollView>

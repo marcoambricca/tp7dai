@@ -7,6 +7,7 @@ import RegisterScreen from './pages/Register';
 import CreateEventScreen from './pages/CreateEvent';
 import AdminPanel from './pages/AdminPanel';
 import EventDetail from './pages/EventDetail/[id].jsx';
+import EditEventScreen from './pages/EditEvent';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,10 @@ export default function App() {
         <Stack.Screen
           name="AdminPanel"
           component={AdminPanel}
+        />
+        <Stack.Screen
+          name="EditEvent"
+          component={EditEventScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
