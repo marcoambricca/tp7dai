@@ -9,15 +9,15 @@ export default function HomeScreen({ navigation }){
     
     useEffect(() => {
         const fetchEvents = async () => {
-            const result = await apiCall('event', [null, null, null, null], null);
+            let result = await apiCall('event', [null, null, null, null], null);
+            result = result[0].json_agg
             if (result) {
                 const currentDate = new Date();
-                const filteredEvents = result[0].json_agg.filter(event => {
+                const filteredEvents = result.filter(event => {
                     const eventDate = new Date(event.start_date);
                     return (
                         eventDate > currentDate && 
-                        event.enabled_for_enrollment && 
-                        event.enrolled_users < event.max_assistance
+                        event.enabled_for_enrollment
                     );
                 });
                 setArrayEvents(filteredEvents);

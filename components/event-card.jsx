@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import GreenButton from './button';
 
-export default function EventCard({ event }){
+export default function EventCard({ event, handleEnrollment }){
     return (
         <View style={styles.card}>
             <Text style={styles.title}>{event.name}</Text>
@@ -46,6 +47,11 @@ export default function EventCard({ event }){
                 <Text style={styles.label}>Enrollment Status:</Text>
                 <Text>{event.enabled_for_enrollment === "1" ? "Enabled" : "Disabled"}</Text>
             </View>
+            {event.enabled_for_enrollment && (
+                <View>
+                    <GreenButton title="Inscribirse" onPress={handleEnrollment} />
+                </View>
+            )}
         </View>
     );
 };

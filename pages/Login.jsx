@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
 import GreenButton from '../components/button';
-import { apiPost } from '../api/api-controller';
+import { apiCall, apiPost } from '../api/api-controller';
 import { storeData } from '../local/data-service.js'
 
 export default function LoginScreen({ navigation }) {
@@ -19,8 +19,10 @@ export default function LoginScreen({ navigation }) {
         const response = await apiPost('user/login', formData, null);
         if (response) {
             if (response.success){
+                const userId = await apiCall(`user/getId/${(formData.username)}`, [], null);
+                console.log('userid', userId)
+                storeData('user', {id: userId.id, username: formData.username, password: formData.password, token: response.token});
                 navigation.navigate('Home');
-                storeData('user', {id: response.userId, username: formData.username, password: formData.password, token: response.token});
             }
             else{
                 console.log(response.message)

@@ -1,13 +1,20 @@
 import React from 'react';
 import { ScrollView, Text, StyleSheet } from 'react-native';
 import EventCard from './event-card.jsx';
+import { getData } from '../local/data-service.js';
+import { apiPost } from '../api/api-controller.js';
 
 export default function EventList({ events, navigation }) {
-
-    console.log('events received by list', events)
     const handleEventPress = (eventId) => {
-        navigation.navigate('EventDetail', { eventId }); // Asegúrate de que 'EventDetail' sea el nombre correcto de la ruta
+        navigation.navigate('EventDetail', { eventId });
     };
+
+    const handleEnrollment = async (eventId) => {
+        const user = await getData('user');
+        console.log('user', user)
+        const result = await apiPost(`event/${eventId}/enrollment`, null, user.token);
+        console.log(result)
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -16,7 +23,7 @@ export default function EventList({ events, navigation }) {
                     <EventCard 
                         key={index} 
                         event={event} 
-                        onPress={() => handleEventPress(event.id)} // Pasa el ID del evento a la función
+                        handleEnrollment={() => handleEnrollment(event.id)}
                     />
                 ))
             ) : (
