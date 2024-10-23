@@ -5,6 +5,7 @@ import LoginScreen from './pages/Login';
 import HomeScreen from './pages/Home';
 import RegisterScreen from './pages/Register';
 import CreateEventScreen from './pages/CreateEvent';
+import AdminPanel from './pages/AdminPanel';
 import EventDetail from './pages/EventDetail/[id].jsx';
 
 const Stack = createStackNavigator();
@@ -32,6 +33,10 @@ export default function App() {
         <Stack.Screen
           name="EventDetail"
           component={EventDetail}
+        />
+        <Stack.Screen
+          name="AdminPanel"
+          component={AdminPanel}
         />
       </Stack.Navigator>
     </NavigationContainer>
