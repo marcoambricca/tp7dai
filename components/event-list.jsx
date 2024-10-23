@@ -5,16 +5,15 @@ import { getData } from '../local/data-service.js';
 import { apiPost } from '../api/api-controller.js';
 
 export default function EventList({ events, navigation }) {
-    const handleEventPress = (eventId) => {
-        navigation.navigate('EventDetail', { eventId });
+    const handleEventPress = (eventId, event) => {
+        navigation.navigate('EventDetail', { eventId, event });
     };
 
     const handleEnrollment = async (eventId) => {
         const user = await getData('user');
-        console.log('user', user)
         const result = await apiPost(`event/${eventId}/enrollment`, null, user.token);
-        console.log(result)
-    }
+        // Handle enrollment result if needed
+    };
 
     return (
         <ScrollView style={styles.container}>
@@ -24,6 +23,7 @@ export default function EventList({ events, navigation }) {
                         key={index} 
                         event={event} 
                         handleEnrollment={() => handleEnrollment(event.id)}
+                        onPress={() => handleEventPress(event.id, event)} // Pass event object
                     />
                 ))
             ) : (

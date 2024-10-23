@@ -4,7 +4,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Events</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.title}>Events</Text>
+            </TouchableOpacity>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity 
                     style={styles.button} 
@@ -17,7 +19,7 @@ export default function Header({ navigation }) {
                 <TouchableOpacity 
                     style={styles.userButton} 
                     onPress={() => {
-                        navigation.navigate('AdminPanel'); // Cambia 'AdminPanel' por el nombre de la ruta del panel de admin
+                        navigation.navigate('AdminPanel');
                     }}
                 >
                     <Text style={styles.userButtonText}>👤</Text>
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-        flex: 1, // Asegura que el título ocupe el espacio disponible
+        flex: 1,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#007BFF',
         borderRadius: 5,
-        marginRight: 10, // Espaciado entre botones
+        marginRight: 10,
     },
     buttonText: {
         color: '#fff',

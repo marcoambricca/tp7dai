@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import GreenButton from './button';
 
-export default function EventCard({ event, handleEnrollment }){
+export default function EventCard({ event, handleEnrollment, onPress }) {
     return (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={onPress}>
             <Text style={styles.title}>{event.name}</Text>
             <Text style={styles.description}>{event.description}</Text>
 
@@ -15,12 +15,12 @@ export default function EventCard({ event, handleEnrollment }){
 
             <View style={styles.detailRow}>
                 <Text style={styles.label}>Location:</Text>
-                <Text>{`${event.event_location.name}`}</Text>
+                <Text>{event.event_location.name}</Text>
             </View>
 
             <View style={styles.detailRow}>
                 <Text style={styles.label}>Max Capacity:</Text>
-                <Text>{event.event_location.max_capacity}</Text>
+                <Text>{event.max_assistance}</Text>
             </View>
 
             <View style={styles.detailRow}>
@@ -47,43 +47,44 @@ export default function EventCard({ event, handleEnrollment }){
                 <Text style={styles.label}>Enrollment Status:</Text>
                 <Text>{event.enabled_for_enrollment === "1" ? "Enabled" : "Disabled"}</Text>
             </View>
+
             {event.enabled_for_enrollment && (
                 <View>
                     <GreenButton title="Inscribirse" onPress={handleEnrollment} />
                 </View>
             )}
-        </View>
+        </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
-    padding: 16,
-    marginVertical: 10,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 14,
-    color: '#333',
-    marginBottom: 8,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  label: {
-    fontWeight: 'bold',
-  }
+    card: {
+        backgroundColor: '#fff',
+        padding: 16,
+        marginVertical: 10,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+    description: {
+        fontSize: 14,
+        color: '#333',
+        marginBottom: 8,
+    },
+    detailRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 4,
+    },
+    label: {
+        fontWeight: 'bold',
+    }
 });
