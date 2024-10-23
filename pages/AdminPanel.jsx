@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Button, Modal, TouchableOpacity } from 'react-native';
-import { apiCall, apiPost } from '../api/api-controller.js'; // Adjust the import based on your API structure
+import { apiCall, apiDelete, apiPost } from '../api/api-controller.js';
 import { getData } from '../local/data-service.js';
 
 export default function AdminPanel({ navigation }) {
     const [events, setEvents] = useState([]);
-    const [participants, setParticipants] = useState([]);
+    const [eventEnrollments, setEventEnrollments] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
@@ -13,22 +13,35 @@ export default function AdminPanel({ navigation }) {
     useEffect(() => {
         const fetchEvents = async () => {
             const user = await getData('user');
-            setCurrentUser(user);
-
-            const result = await apiCall('event', [null, null, null, null], user.token);
-            const filteredEvents = result.filter(event => event.creator_user.id === user.id);
-            setEvents(filteredEvents);
+            if(user){setCurrentUser(user)}
+            let result = await apiCall('event', [null, null, null, null], null);
+            result = result[0].json_agg;
+            console.log('result', result);
+            if (result) {
+                const filteredEvents = result.filter(event => event.creator_user.id === user.id)
+                setEvents(filteredEvents);
+            }
         };
         fetchEvents();
     }, []);
 
     const fetchParticipants = async (eventId) => {
-        const result = await apiCall(`event/${eventId}/enrollment`);
-        setParticipants(result);
-    };
+        try {
+          const result = await apiCall(`event/${eventId}/enrollment`);
+          console.log('Enroll fetch', result);
+      
+          if (result.success) {
+            setEventEnrollments(result); // Set state only if successful
+          } else {
+            alert('No enrollments for event')
+          }
+        } catch (error) {
+          console.error('Error fetching enrollments:', error.message);
+        }
+      };
 
     const handleDeleteEvent = async (eventId) => {
-        const response = await apiPost(`event/${eventId}/delete`, {}, currentUser.token);
+        const response = await apiDelete(`event/${eventId}`, currentUser.token);
         if (response) {
             setEvents(events.filter(event => event.id !== eventId));
         }
@@ -42,7 +55,7 @@ export default function AdminPanel({ navigation }) {
 
     const closeModal = () => {
         setModalVisible(false);
-        setParticipants([]); // Clear participants when closing the modal
+        setEventEnrollments([]);
     };
 
     return (
@@ -64,17 +77,24 @@ export default function AdminPanel({ navigation }) {
                 transparent={false}
                 visible={modalVisible}
                 onRequestClose={closeModal}
-            >
+                >
                 <View style={styles.modalContainer}>
                     <Text style={styles.modalTitle}>Participants</Text>
-                    {participants.map(participant => (
-                        <View key={participant.id} style={styles.participant}>
-                            <Text>{participant.json_build_object.first_name} {participant.json_build_object.last_name}</Text>
-                            <Text>Username: {participant.json_build_object.username}</Text>
-                            <Text>Description: {participant.description}</Text>
-                            <Text>Registration Date: {new Date(participant.registration_date_time).toLocaleDateString()}</Text>
+                    
+                    {/* Ternary check for enrollments */}
+                    {eventEnrollments.length > 0 ? (
+                    eventEnrollments.map((enrollment) => (
+                        <View key={enrollment.id_event} style={styles.participant}>
+                        <Text>Event ID: {enrollment.id_event}</Text>
+                        <Text>User ID: {enrollment.id_user}</Text>
+                        <Text>Description: {enrollment.description}</Text>
+                        <Text>Registration Date: {new Date(enrollment.registration_date_time).toLocaleDateString()}</Text>
                         </View>
-                    ))}
+                    ))
+                    ) : (
+                    <Text style={styles.noEnrollmentsMessage}>No participants have enrolled for this event yet.</Text>
+                    )}
+                    
                     <Button title="Close" onPress={closeModal} />
                 </View>
             </Modal>
