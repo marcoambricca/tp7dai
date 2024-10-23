@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import InputContainer from '../components/input-container';
-import GreenButton from '../components/button';
+import Button from '../components/button';
 import { apiCall, apiPost } from '../api/api-controller';
 import { storeData } from '../local/data-service.js'
 
@@ -20,7 +20,6 @@ export default function LoginScreen({ navigation }) {
         if (response) {
             if (response.success){
                 const userId = await apiCall(`user/getId/${(formData.username)}`, [], null);
-                console.log('userid', userId)
                 storeData('user', {id: userId.id, username: formData.username, password: formData.password, token: response.token});
                 navigation.navigate('Home');
             }
@@ -39,7 +38,7 @@ export default function LoginScreen({ navigation }) {
                 <Text style={styles.title}>Sign in</Text>
                 <InputContainer label={'Username'} name={'username'} onChange={handleInput} value={formData.username}/>
                 <InputContainer label={'Password'} name={'password'} onChange={handleInput} value={formData.password} secureTextEntry={true}/>
-                <GreenButton title={'Sign in'} onPress={handleLogin} backgroundColor={'#28a745'} />
+                <Button title={'Sign in'} onPress={handleLogin} backgroundColor={'#28a745'} />
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Forgot password?</Text>
                     <Pressable onPress={() => navigation.navigate('Register')}>

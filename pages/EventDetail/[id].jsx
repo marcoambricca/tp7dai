@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { getData } from '../../local/data-service.js';
-import Header from '../../components/header.jsx'; // Adjust the path as necessary
+import Header from '../../components/header.jsx';
 
 export default function EventDetail({ route, navigation }) {
-    const { event } = route.params; // Directly use the event object passed from the navigation
-    const [currentUser, setCurrentUser] = useState(null);
-
-    useEffect(() => {
-        getData('user').then(user => setCurrentUser(user)); // Fetch current user data if needed
-    }, []);
+    const { event } = route.params;
 
     if (!event) {
         return <Text>Cargando...</Text>;
@@ -17,7 +12,7 @@ export default function EventDetail({ route, navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header navigation={navigation} />
+            <Header navigation={navigation} title={'Detalles de evento'}/>
             <ScrollView contentContainerStyle={styles.content}>
                 <Text style={styles.title}>{event.name}</Text>
                 <Text style={styles.description}>{event.description}</Text>

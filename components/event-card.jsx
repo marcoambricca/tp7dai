@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import GreenButton from './button';
+import Button from './button';
 
 export default function EventCard({ event, handleEnrollment, onPress }) {
     return (
@@ -9,48 +9,48 @@ export default function EventCard({ event, handleEnrollment, onPress }) {
             <Text style={styles.description}>{event.description}</Text>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Category:</Text>
+                <Text style={styles.label}>Categoria:</Text>
                 <Text>{event.event_category.name}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Location:</Text>
+                <Text style={styles.label}>Ubicación:</Text>
                 <Text>{event.event_location.name}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Max Capacity:</Text>
+                <Text style={styles.label}>Capacidad máxima:</Text>
                 <Text>{event.max_assistance}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Province:</Text>
+                <Text style={styles.label}>Provincia:</Text>
                 <Text>{event.event_location.location.province.name}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Price:</Text>
+                <Text style={styles.label}>Precio:</Text>
                 <Text>${event.price}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Start Date:</Text>
+                <Text style={styles.label}>Fecha:</Text>
                 <Text>{new Date(event.start_date).toLocaleDateString()}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Duration:</Text>
+                <Text style={styles.label}>Duración:</Text>
                 <Text>{`${event.duration_in_minutes} minutes`}</Text>
             </View>
 
             <View style={styles.detailRow}>
-                <Text style={styles.label}>Enrollment Status:</Text>
-                <Text>{event.enabled_for_enrollment === "1" ? "Enabled" : "Disabled"}</Text>
+                <Text style={styles.label}>Inscripción habilitada:</Text>
+                <Text>{event.enabled_for_enrollment === "1" ? "Si" : "No"}</Text>
             </View>
 
             {event.enabled_for_enrollment && (
                 <View>
-                    <GreenButton title="Inscribirse" onPress={handleEnrollment} />
+                    <Button title="Inscribirse" onPress={handleEnrollment} backgroundColor={'#28a745'}/>
                 </View>
             )}
         </TouchableOpacity>

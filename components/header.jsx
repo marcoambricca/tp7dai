@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function Header({ navigation }) {
+export default function Header({ navigation, title }) {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                <Text style={styles.title}>Events</Text>
+                <Text style={styles.title}>{title}</Text>
             </TouchableOpacity>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity 

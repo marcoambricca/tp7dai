@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { apiCall } from '../api/api-controller.js';
 import EventList from '../components/event-list.jsx';
 import Header from '../components/header.jsx';
@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header navigation={navigation} />
+            <Header navigation={navigation} title={'Eventos'}/>
             <EventList events={arrayEvents} navigation={navigation} />
         </SafeAreaView>
     );

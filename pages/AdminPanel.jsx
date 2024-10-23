@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, Modal, TouchableOpacity } from 'react-native';
-import { apiCall, apiDelete, apiPost } from '../api/api-controller.js';
+import { View, Text, StyleSheet, ScrollView, Button, Modal } from 'react-native';
+import { apiCall, apiDelete } from '../api/api-controller.js';
 import { getData } from '../local/data-service.js';
+import Header from '../components/header.jsx';
 
 export default function AdminPanel({ navigation }) {
     const [events, setEvents] = useState([]);
@@ -31,7 +32,7 @@ export default function AdminPanel({ navigation }) {
           console.log('Enroll fetch', result);
       
           if (result.success) {
-            setEventEnrollments(result); // Set state only if successful
+            setEventEnrollments(result);
           } else {
             alert('No enrollments for event')
           }
@@ -60,18 +61,17 @@ export default function AdminPanel({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Admin Panel</Text>
+            <Header navigation={navigation} title={'Panel de administrador'}/>
             <ScrollView>
                 {events.map(event => (
                     <View key={event.id} style={styles.card}>
                         <Text style={styles.cardTitle}>{event.name}</Text>
-                        <Button title="View Participants" onPress={() => openParticipantsModal(event.id)} />
-                        <Button title="Delete Event" onPress={() => handleDeleteEvent(event.id)} color="red" />
+                        <Button title="Ver participantes" onPress={() => openParticipantsModal(event.id)} />
+                        <Button title="Eliminar evento" onPress={() => handleDeleteEvent(event.id)} color="red" />
                     </View>
                 ))}
             </ScrollView>
 
-            {/* Participants Modal */}
             <Modal
                 animationType="slide"
                 transparent={false}
@@ -79,20 +79,19 @@ export default function AdminPanel({ navigation }) {
                 onRequestClose={closeModal}
                 >
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Participants</Text>
+                    <Text style={styles.modalTitle}>Participantes</Text>
                     
-                    {/* Ternary check for enrollments */}
                     {eventEnrollments.length > 0 ? (
                     eventEnrollments.map((enrollment) => (
                         <View key={enrollment.id_event} style={styles.participant}>
-                        <Text>Event ID: {enrollment.id_event}</Text>
-                        <Text>User ID: {enrollment.id_user}</Text>
-                        <Text>Description: {enrollment.description}</Text>
-                        <Text>Registration Date: {new Date(enrollment.registration_date_time).toLocaleDateString()}</Text>
+                        <Text>ID Evento: {enrollment.id_event}</Text>
+                        <Text>ID Usuario: {enrollment.id_user}</Text>
+                        <Text>Descripción: {enrollment.description}</Text>
+                        <Text>Fecha de inscripción: {new Date(enrollment.registration_date_time).toLocaleDateString()}</Text>
                         </View>
                     ))
                     ) : (
-                    <Text style={styles.noEnrollmentsMessage}>No participants have enrolled for this event yet.</Text>
+                    <Text style={styles.noEnrollmentsMessage}>No hay inscripciones a este evento.</Text>
                     )}
                     
                     <Button title="Close" onPress={closeModal} />
