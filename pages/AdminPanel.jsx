@@ -8,18 +8,19 @@ export default function AdminPanel({ navigation }) {
     const [events, setEvents] = useState([]);
     const [eventEnrollments, setEventEnrollments] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedEventId, setSelectedEventId] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         const fetchEvents = async () => {
             const user = await getData('user');
-            if(user){setCurrentUser(user)}
+            if (user) {
+                setCurrentUser(user);
+            }
             let result = await apiCall('event', [null, null, null, null], null);
             result = result[0].json_agg;
-            console.log('result', result);
             if (result) {
-                const filteredEvents = result.filter(event => event.creator_user.id === user.id)
+                const filteredEvents = result.filter(event => event.creator_user.id === user.id);
+                console.log('Filtered Events:', filteredEvents);
                 setEvents(filteredEvents);
             }
         };
@@ -28,18 +29,17 @@ export default function AdminPanel({ navigation }) {
 
     const fetchParticipants = async (eventId) => {
         try {
-          const result = await apiCall(`event/${eventId}/enrollment`);
-          console.log('Enroll fetch', result);
-      
-          if (result.success) {
-            setEventEnrollments(result);
-          } else {
-            alert('No enrollments for event')
-          }
+            const result = await apiCall(`event/${eventId}/enrollment`);
+            if (result) {
+                setEventEnrollments([result]);
+            } else {
+                setEventEnrollments([]);
+            }
         } catch (error) {
-          console.error('Error fetching enrollments:', error.message);
+            console.error('Error fetching enrollments:', error.message);
+            setEventEnrollments([]);
         }
-      };
+    };
 
     const handleDeleteEvent = async (eventId) => {
         const response = await apiDelete(`event/${eventId}`, currentUser.token);
@@ -50,7 +50,6 @@ export default function AdminPanel({ navigation }) {
 
     const openParticipantsModal = (eventId) => {
         fetchParticipants(eventId);
-        setSelectedEventId(eventId);
         setModalVisible(true);
     };
 
@@ -61,7 +60,7 @@ export default function AdminPanel({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Header navigation={navigation} title={'Panel de administrador'}/>
+            <Header navigation={navigation} title={'Panel de administrador'} />
             <ScrollView>
                 {events.map(event => (
                     <View key={event.id} style={styles.card}>
@@ -78,24 +77,24 @@ export default function AdminPanel({ navigation }) {
                 transparent={false}
                 visible={modalVisible}
                 onRequestClose={closeModal}
-                >
+            >
                 <View style={styles.modalContainer}>
                     <Text style={styles.modalTitle}>Participantes</Text>
-                    
+
                     {eventEnrollments.length > 0 ? (
-                    eventEnrollments.map((enrollment) => (
-                        <View key={enrollment.id_event} style={styles.participant}>
-                        <Text>ID Evento: {enrollment.id_event}</Text>
-                        <Text>ID Usuario: {enrollment.id_user}</Text>
-                        <Text>Descripción: {enrollment.description}</Text>
-                        <Text>Fecha de inscripción: {new Date(enrollment.registration_date_time).toLocaleDateString()}</Text>
-                        </View>
-                    ))
+                        eventEnrollments.map((enrollment) => (
+                            <View key={enrollment.id} style={styles.participant}>
+                                <Text>ID Evento: {enrollment.id_event}</Text>
+                                <Text>ID Usuario: {enrollment.id_user}</Text>
+                                <Text>Descripción: {enrollment.description}</Text>
+                                <Text>Fecha de inscripción: {new Date(enrollment.registration_date_time).toLocaleDateString()}</Text>
+                            </View>
+                        ))
                     ) : (
-                    <Text style={styles.noEnrollmentsMessage}>No hay inscripciones a este evento.</Text>
+                        <Text style={styles.noEnrollmentsMessage}>No hay inscripciones a este evento.</Text>
                     )}
-                    
-                    <Button title="Close" onPress={closeModal} />
+
+                    <Button title="Cerrar" onPress={closeModal} />
                 </View>
             </Modal>
         </View>
@@ -107,11 +106,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
     },
     card: {
         backgroundColor: '#f9f9f9',
@@ -139,5 +133,10 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#eaeaea',
         borderRadius: 5,
+    },
+    noEnrollmentsMessage: {
+        fontSize: 16,
+        color: 'gray',
+        textAlign: 'center',
     },
 });

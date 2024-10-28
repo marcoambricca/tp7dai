@@ -29,21 +29,19 @@ export default function EditEventScreen({ navigation, route }) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
 
-    // Fetch event data for editing
     useEffect(() => {
         const fetchEventData = async () => {
             const user = await getData('user');
             setCurrentUser(user);
 
-            // Fetch categories and locations as in the form
             const resultCat = await apiCall('event_category');
             const resultLoc = await apiCall('event_location', null, user.token);
             setCategories(resultCat);
             setLocations(resultLoc);
 
-            // Fetch event details
             const eventDetails = await apiCall(`event/${eventId}`, null, user.token);
-            setFormState({ ...eventDetails });  // Pre-fill form with event details
+            console.log('event details', eventDetails)
+            setFormState({ ...eventDetails.jsonAgg[0] });  
         };
 
         fetchEventData();
@@ -63,12 +61,8 @@ export default function EditEventScreen({ navigation, route }) {
 
     const handleConfirm = async () => {
         const user = await getData('user');
-        const response = await apiPut(`event`, formState.event, user.token);
-        if (response.success) {
-            setSuccessModalVisible(true);
-        } else {
-            alert('Error updating event');
-        }
+        const response = await apiPut(`event`, formState, user.token);
+        setSuccessModalVisible(true);
         setModalVisible(false);
     };
 
